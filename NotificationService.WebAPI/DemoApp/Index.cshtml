@@ -1,0 +1,29 @@
+﻿@page
+@model NotificationService.WebAPI.DemoApp.IndexModel
+@{
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aspnet-signalr/1.0.27/signalr.min.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const user = urlParams.get('user');
+
+        var connection = new signalR.HubConnectionBuilder().withUrl(`/notification?user=${user}`).build();
+
+        connection.on("NotificationEvent", function (message) {
+            console.log(message);
+        });
+
+        connection.start().then(function () {
+            console.log("Conexao realizada.");
+        }).catch(function (err) {
+            return console.error(err.toString());
+        });
+    </script>
+</body>
+</html>
